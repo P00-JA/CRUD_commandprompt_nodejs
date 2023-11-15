@@ -15,12 +15,13 @@ function loadData() {
     logError(error);
   }
 }
- //save employee data
+
+//save employee data
 function saveData(data) {
-  fs.writeFileSync(dataFilePath, JSON.stringify(data,null,4));
+  fs.writeFileSync(dataFilePath, JSON.stringify(data, null, 4));
 }
 
- //error messages to log to error file
+//error messages to log to error file
 function logError(error) {
   const logMessage = `${new Date().toISOString()} - ${error.message}\n`;
   fs.appendFileSync(errorLogFilePath, logMessage);
@@ -28,70 +29,73 @@ function logError(error) {
 
 //to create a new employee
 function createEmployee() {
-  try{
+  try {
     const name = readlineSync.question("Enter employee name: ");
-  const dob = readlineSync.question("Enter date of birth (YYYY-MM-DD): ");
-  const department = readlineSync.question("Enter department: ");
-
-  const data = loadData();
-
-  if (data.some((employee) => employee.name === name)) {
-    console.log("Employee with the same name already exists.");
-  } else {
-    const id = Date.now().toString();
-    const newEmployee = { id, name, dob, department };
-    data.push(newEmployee);
-    saveData(data);
-    console.log("Employee created successfully!");
-  }
-
-  displayOptions();
-  performOperation();
-  }catch(error){
+    const dob = readlineSync.question("Enter date of birth (YYYY-MM-DD): ");
+    const department = readlineSync.question("Enter department: ");
+    const data = loadData();
+    //to check if the employee with same name exist
+    if (data.some((employee) => employee.name === name)) {
+      console.log("Employee with the same name already exists.");
+    } else {
+      const id = Date.now().toString();
+      const newEmployee = { id, name, dob, department };
+      data.push(newEmployee);
+      saveData(data);
+      console.log("Employee created successfully!");
+    }
+    displayOptions();
+    performOperation();
+  } catch (error) {
     console.log(`failed to create employee data! ${error.message}`);
     logError(error);
   }
-  
 }
 
 //update employee details by overwriting old values
 function updateEmployee() {
-  try{
+  try {
     const idToUpdate = readlineSync.question("Enter employee id to update: "); // Get employee id to update
     const data = loadData();
     const employeeToUpdate = data.find((emp) => emp.id === idToUpdate);
 
     if (employeeToUpdate) {
-      const newName = readlineSync.question(`Enter new name for ${employeeToUpdate.name}: `);
-      const newDob = readlineSync.question(`Enter new date of birth for ${employeeToUpdate.name} (YYYY-MM-DD): `);
-      const newDepartment = readlineSync.question(`Enter new department for ${employeeToUpdate.name}: `);
-  
+      const newName = readlineSync.question(
+        `Enter new name for ${employeeToUpdate.name}: `
+      );
+      const newDob = readlineSync.question(
+        `Enter new date of birth for ${employeeToUpdate.name} (YYYY-MM-DD): `
+      );
+      const newDepartment = readlineSync.question(
+        `Enter new department for ${employeeToUpdate.name}: `
+      );
+
       // Update the employee's properties
       employeeToUpdate.name = newName;
       employeeToUpdate.dob = newDob;
       employeeToUpdate.department = newDepartment;
-  
+
       saveData(data); // Save the updated data to the file
       console.log("Employee updated successfully!");
     } else {
       console.log("Employee not found with the specified ID.");
     }
-  
+
     displayOptions();
     performOperation();
-  }catch(error){
+  } catch (error) {
     console.log(`failed to update employee data! ${error.message}`);
     logError(error);
-  } 
+  }
 }
 
 //function to delete employee by id
 function deleteEmployee() {
-  try{
+  try {
     const idToDelete = readlineSync.question("Enter employee id to delete: "); // Get employee id to delete
     const data = loadData();
     const indexToDelete = data.findIndex((emp) => emp.id === idToDelete);
-  
+
     if (indexToDelete !== -1) {
       const deletedEmployee = data.splice(indexToDelete, 1)[0]; // Remove the employee from the array
       saveData(data); // Save the updated data to the file
@@ -99,38 +103,39 @@ function deleteEmployee() {
     } else {
       console.log("Employee not found with the specified ID.");
     }
-  
+
     displayOptions();
     performOperation();
-  }catch(error){
-    console.log(`failed to update employee data! ${error.message}`)
+  } catch (error) {
+    console.log(`failed to update employee data! ${error.message}`);
     logError(error);
   }
 }
 
 //display employees belonging to same department
 function displayByDepartment() {
-try{
-  const department = readlineSync.question("Enter department to display: ");
-  const data = loadData();
-  const departmentEmployees = data.filter(
-    (employee) => employee.department === department
-  );
+  try {
+    const department = readlineSync.question("Enter department to display: ");
+    const data = loadData();
+    const departmentEmployees = data.filter(
+      (employee) => employee.department === department
+    );
 
-  if (departmentEmployees.length === 0) {
-    console.log("No employees found in the specified department.");
-  } else {
-    console.log(`Employees in ${department}:`);
-    departmentEmployees.forEach((employee) => {
-      console.log(`Name: ${employee.name}, Age: ${calculateAge(employee.dob)}`);
-    });
-    console.log(`Total count: ${departmentEmployees.length}`);
-  }
+    if (departmentEmployees.length === 0) {
+      console.log("No employees found in the specified department.");
+    } else {
+      console.log(`Employees in ${department}:`);
+      departmentEmployees.forEach((employee) => {
+        console.log(
+          `Name: ${employee.name}, Age: ${calculateAge(employee.dob)}`
+        );
+      });
+      console.log(`Total count: ${departmentEmployees.length}`);
+    }
 
-  displayOptions();
-  performOperation();
-
-  }catch(error){
+    displayOptions();
+    performOperation();
+  } catch (error) {
     console.log(`Failed to display employee information ${error.message}`);
     logError(error);
   }
@@ -138,11 +143,11 @@ try{
 
 //display employee by entering ID
 function displayById() {
-  try{
+  try {
     const id = readlineSync.question("Enter employee id: ");
     const data = loadData();
     const employee = data.find((emp) => emp.id === id);
-  
+
     if (employee) {
       console.log(`Employee Details:
         ID: ${employee.id}
@@ -152,24 +157,22 @@ function displayById() {
     } else {
       console.log("Employee not found with the specified ID.");
     }
-  
+
     displayOptions();
     performOperation();
-
-  }catch(error){
+  } catch (error) {
     console.log(`Failed to display employee information ${error.message}`);
-    logError(error)
+    logError(error);
   }
 }
 
 function calculateAge(dob) {
-  const birthDate = dob.split('-')[0];
+  const birthDate = dob.split("-")[0];
   console.log(birthDate);
   const currentDate = new Date().getFullYear();
   console.log(currentDate);
-  return Math.floor((currentDate - birthDate));
+  return Math.floor(currentDate - birthDate);
 }
-
 
 //display options
 function displayOptions() {
@@ -180,7 +183,7 @@ function displayOptions() {
   console.log("5. Display employee by employee id");
   console.log("6. Exit");
 }
- //choose operation to perform
+//choose operation to perform
 function performOperation() {
   const option = readlineSync.question("Choose an option (1-6): ");
   switch (option) {
@@ -201,8 +204,8 @@ function performOperation() {
       break;
     case "6":
       console.log("Your session duration is 20 minutes.");
-      const sessionEndTime = new Date().getMinutes();//to take time of exit
-      const sessionDuration = Math.floor((sessionEndTime - sessionStartTime));
+      const sessionEndTime = new Date().getMinutes(); //to take time of exit
+      const sessionDuration = Math.floor(sessionEndTime - sessionStartTime);
       console.log(`Session duration: ${sessionDuration} minutes.`);
       break;
     default:

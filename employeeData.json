@@ -1,0 +1,38 @@
+[
+    {
+        "id": "1699999922815",
+        "name": "Pooja M P",
+        "dob": "2000-05-25",
+        "department": "IT"
+    },
+    {
+        "id": "1700027574163",
+        "name": "Lachu",
+        "dob": "2004-08-17",
+        "department": "e-Commerce"
+    },
+    {
+        "id": "1700028096792",
+        "name": "Gopika",
+        "dob": "2001-10-24",
+        "department": "Clinical"
+    },
+    {
+        "id": "1700028166462",
+        "name": "soorya",
+        "dob": "2001-03-03",
+        "department": "Biomedical"
+    },
+    {
+        "id": "1700028305726",
+        "name": "pappy",
+        "dob": "2000-12-25",
+        "department": "IT"
+    },
+    {
+        "id": "1700028707018",
+        "name": "Aravind",
+        "dob": "1998-12-23",
+        "department": "IT"
+    }
+]
